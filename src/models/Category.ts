@@ -5,6 +5,10 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
+export enum CATEGORY {
+  INCOME = 'income',
+  OUTCOME = 'outcome',
+}
 @Entity('categories')
 class Category {
   @PrimaryGeneratedColumn('uuid')

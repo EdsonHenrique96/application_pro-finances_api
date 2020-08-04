@@ -5,8 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import Category from './Category';
+import Category, { CATEGORY } from './Category';
 
 @Entity('transactions')
 class Transaction {
@@ -17,13 +18,17 @@ class Transaction {
   title: string;
 
   @Column('enum')
-  type: 'income' | 'outcome';
+  type: CATEGORY.INCOME | CATEGORY.OUTCOME;
 
   @Column()
   value: number;
 
-  @ManyToOne(() => Category, category => category.id)
-  category_id: Category;
+  @Column()
+  category_id: string;
+
+  @ManyToOne(() => Category)
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
 
   @CreateDateColumn()
   created_at: Date;
