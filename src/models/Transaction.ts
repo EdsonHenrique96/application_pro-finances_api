@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import Category, { CATEGORY } from './Category';
+import ColumnNumericTransformer from './transformers/ColumnNumericTransformer';
 
 @Entity('transactions')
 class Transaction {
@@ -20,7 +21,11 @@ class Transaction {
   @Column('enum')
   type: CATEGORY.INCOME | CATEGORY.OUTCOME;
 
-  @Column()
+  @Column('numeric', {
+    precision: 7,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
   value: number;
 
   @Column()
