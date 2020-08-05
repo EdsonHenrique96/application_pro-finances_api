@@ -3,6 +3,7 @@ import {
   QueryRunner,
   Table,
   TableForeignKey,
+  TableColumn,
 } from 'typeorm';
 
 export default class CreateTableTransactions1595982699072
@@ -27,17 +28,14 @@ export default class CreateTableTransactions1595982699072
           {
             name: 'value',
             type: 'numeric',
+            precision: 8,
+            scale: 2,
             isNullable: false,
           },
           {
             name: 'type',
             type: 'varchar',
             isNullable: false,
-          },
-          {
-            name: 'category_id',
-            type: 'uuid',
-            isNullable: true,
           },
           {
             name: 'created_at',
@@ -50,6 +48,15 @@ export default class CreateTableTransactions1595982699072
             default: 'now()',
           },
         ],
+      }),
+    );
+
+    await queryRunner.addColumn(
+      'transactions',
+      new TableColumn({
+        name: 'category_id',
+        type: 'uuid',
+        isNullable: true,
       }),
     );
 
@@ -67,7 +74,13 @@ export default class CreateTableTransactions1595982699072
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {
-    await queryRunner.dropForeignKey('transactions', 'TransactionCategoryFK');
+    const table = await queryRunner.getTable('transactions');
+    const foreignKey = table?.foreignKeys.find(
+      fk => fk.columnNames.indexOf('category_id') !== -1,
+    );
+    await queryRunner.dropForeignKey('transactions', foreignKey || '');
+
+    await queryRunner.dropColumn('transactions', 'category_id');
 
     await queryRunner.dropTable('transactions');
   }
