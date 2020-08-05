@@ -22,7 +22,7 @@ class Transaction {
   type: CATEGORY.INCOME | CATEGORY.OUTCOME;
 
   @Column('numeric', {
-    precision: 7,
+    precision: 8,
     scale: 2,
     transformer: new ColumnNumericTransformer(),
   })
