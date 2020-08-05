@@ -1,11 +1,13 @@
+import APP_ERRORS from './types';
+
 class AppError {
   public readonly message: string;
 
-  public readonly statusCode: number;
+  public readonly type: APP_ERRORS;
 
-  constructor(message: string, statusCode = 400) {
+  constructor(message: string, type: APP_ERRORS) {
     this.message = message;
-    this.statusCode = statusCode;
+    this.type = type;
   }
 }
 

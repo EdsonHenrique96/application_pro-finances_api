@@ -1,0 +1,5 @@
+enum HTTP_ERRORS {
+  TRANSACTION_NOT_FOUND = 404,
+}
+
+export default HTTP_ERRORS;

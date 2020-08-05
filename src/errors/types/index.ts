@@ -1,0 +1,5 @@
+enum APP_ERRORS {
+  TRANSACTION_NOT_FOUND = 'TRANSACTION_NOT_FOUND',
+}
+
+export default APP_ERRORS;

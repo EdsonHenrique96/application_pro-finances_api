@@ -8,6 +8,7 @@ import routes from './routes';
 import AppError from './errors/AppError';
 
 import createConnection from './database';
+import HTTP_ERRORS from './routes/errors/types';
 
 createConnection();
 const app = express();
@@ -17,7 +18,7 @@ app.use(routes);
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   if (err instanceof AppError) {
-    return response.status(err.statusCode).json({
+    return response.status(HTTP_ERRORS[err.type]).json({
       status: 'error',
       message: err.message,
     });
