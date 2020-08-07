@@ -3,10 +3,12 @@ import multer from 'multer';
 import { getCustomRepository } from 'typeorm';
 import multerConfigs from '../configs/multer';
 import { CATEGORY } from '../models/Category';
+import '../configs/csvParse';
 
 import TransactionsRepository from '../repositories/TransactionsRepository';
 import CreateTransactionService from '../services/CreateTransactionService';
 import DeleteTransactionService from '../services/DeleteTransactionService';
+import ImportTransactionsService from '../services/ImportTransactionsService';
 // import ImportTransactionsService from '../services/ImportTransactionsService';
 
 const upload = multer(multerConfigs);
@@ -52,11 +54,13 @@ transactionsRouter.delete('/:id', async (request, response) => {
 
 transactionsRouter.post(
   '/import',
-  upload.single('report'),
+  upload.single('file'),
   async (request, response) => {
     const { file } = request;
+    const importTransaction = new ImportTransactionsService();
+    const createdTransactions = await importTransaction.execute(file.filename);
 
-    return response.json(file);
+    return response.json(createdTransactions);
   },
 );
 
